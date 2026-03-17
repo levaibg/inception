@@ -1,0 +1,1 @@
+accerder mariadb en dehors dun docker 

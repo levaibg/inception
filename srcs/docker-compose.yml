@@ -1,0 +1,50 @@
+services:
+  nginx:
+    build: ./NGINX
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_data:/var/www/html
+    depends_on:
+      - wordpress
+    networks:
+      - network
+    env_file: .env
+
+  wordpress:
+    build: ./wordpress
+    volumes:
+      - wordpress_data:/var/www/html
+    depends_on:
+      - mariadb
+    networks:
+      - network
+    env_file: .env
+
+  mariadb:
+    build: ./mariadb
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - network
+    env_file: .env
+
+volumes:
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/lloginov/data/wordpress
+
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/lloginov/data/mariadb
+
+networks:
+  network:
+    name: network
+    driver: bridge
