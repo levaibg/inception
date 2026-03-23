@@ -1,3 +1,12 @@
+secrets:
+  sqlpass :
+    file: ../secrets/MYSQL_PASSWORD.txt
+  wpadminpass : 
+    file: ../secrets/wp_admin_password.txt
+  wpuserpass :
+    file: ../secrets/wp_user_pass.txt
+
+
 services:
   nginx:
     build: ./NGINX
@@ -10,6 +19,7 @@ services:
     networks:
       - network
     env_file: .env
+    restart: unless-stopped
 
   wordpress:
     build: ./wordpress
@@ -20,7 +30,11 @@ services:
     networks:
       - network
     env_file: .env
-
+    restart: unless-stopped
+    secrets:
+      - wpadminpass
+      - wpuserpass
+      - sqlpass
   mariadb:
     build: ./mariadb
     volumes:
@@ -28,6 +42,9 @@ services:
     networks:
       - network
     env_file: .env
+    restart: unless-stopped
+    secrets:
+      - sqlpass
 
 volumes:
   wordpress_data:
