@@ -12,5 +12,5 @@ RUN chmod +x /createdb.sh
 
 # CMD ["/mysqld_safe"]
 
-# CMD [""]
+# CMD [""] SELECT user_login, user_email FROM wp_users;
 CMD ["/createdb.sh"]
